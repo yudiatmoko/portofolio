@@ -12,6 +12,6 @@ export default defineConfig({
   },
   server: {
     host: true,
-    allowedHosts: [".ngrok-free.app", "yudiatm0ko.site"],
+    allowedHosts: [".ngrok-free.app", "www.yudiatm0ko.site"],
   },
 });
