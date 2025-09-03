@@ -1,17 +1,96 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Mail, MapPin, Phone } from "lucide-react";
-import { BsMailbox, BsPhone, BsSend, BsTelephone } from "react-icons/bs";
+import {
+  BsCheck2Circle,
+  BsExclamationTriangle,
+  BsSend,
+  BsTelephone,
+} from "react-icons/bs";
 import { LuMail, LuMapPin } from "react-icons/lu";
+import emailjs from "@emailjs/browser";
 
 const Contact = () => {
+  const formRef = useRef();
+  const [formStatus, setFormStatus] = useState("idle");
+
   const fadeInAnimation = {
     initial: { opacity: 0, y: 50 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
+  };
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    setFormStatus("loading");
+
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      )
+      .then(
+        () => {
+          setFormStatus("success");
+          formRef.current.reset();
+        },
+        (error) => {
+          console.error(error);
+          setFormStatus("error");
+        }
+      );
+  };
+
+  useEffect(() => {
+    if (formStatus === "success" || formStatus === "error") {
+      const timer = setTimeout(() => {
+        setFormStatus("idle");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [formStatus]);
+
+  const getButtonContent = () => {
+    switch (formStatus) {
+      case "loading":
+        return "Sending...";
+      case "success":
+        return (
+          <>
+            Message Sent!
+            <BsCheck2Circle className="mr-2" />
+          </>
+        );
+      case "error":
+        return (
+          <>
+            Send Failed
+            <BsExclamationTriangle className="mr-2" />
+          </>
+        );
+      default:
+        return (
+          <>
+            Send Message <BsSend className="ml-2 text-xl" />
+          </>
+        );
+    }
+  };
+
+  const getButtonClassName = () => {
+    switch (formStatus) {
+      case "success":
+        return "bg-green-600 hover:bg-green-700";
+      case "error":
+        return "bg-red-600 hover:bg-red-700";
+      default:
+        return "bg-gradient-to-r from-blue-600 to-pink-600";
+    }
   };
 
   return (
@@ -32,7 +111,7 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-16 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-y-28 md:grid-cols-2 md:gap-x-20">
           <motion.div
             {...fadeInAnimation}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -41,8 +120,7 @@ const Contact = () => {
               Contact Information
             </h2>
             <p className="mb-8 text-gray-400">
-              Feel free to reach out to me any time. I prefer to discuss by
-              email, particularly for initial contact.
+              Feel free to reach out to me any time.
             </p>
             <div className="flex flex-col gap-6 text-white">
               <a
@@ -61,7 +139,7 @@ const Contact = () => {
               </a>
               <div className="flex items-center gap-4">
                 <LuMapPin size={20} />
-                <span>Bekasi, Indonesia</span>
+                <span>Bekasi Regency, Indonesia</span>
               </div>
             </div>
           </motion.div>
@@ -73,24 +151,44 @@ const Contact = () => {
             <h2 className="mb-6 text-2xl font-semibold text-white">
               Say Something
             </h2>
-            <form className="flex flex-col gap-6">
+            <form
+              ref={formRef}
+              onSubmit={sendEmail}
+              className="flex flex-col gap-6"
+            >
               <Input
                 type="text"
+                name="user_name"
                 placeholder="Your Name"
+                required
                 className="border-gray-700 bg-gray-800 text-white focus:ring-blue-500"
               />
               <Input
                 type="email"
-                placeholder="Your Mail"
+                name="user_email"
+                placeholder="Your Email Address"
+                required
+                className="border-gray-700 bg-gray-800 text-white focus:ring-blue-500"
+              />
+              <Input
+                type="text"
+                name="title"
+                placeholder="Subject"
                 className="border-gray-700 bg-gray-800 text-white focus:ring-blue-500"
               />
               <Textarea
+                name="message"
                 placeholder="Message"
+                required
                 className="min-h-[150px] border-gray-700 bg-gray-800 text-white focus:ring-blue-500"
               />
-              <Button className="w-full rounded-lg bg-gradient-to-r from-blue-500 to-pink-500 text-white shadow-lg transition-all duration-300 hover:scale-105">
-                Send Message
-                <BsSend className="text-2xl" />
+
+              <Button
+                type="submit"
+                disabled={formStatus !== "idle"}
+                className={`flex items-center justify-center gap-2 w-full rounded-lg text-white shadow-lg transition-all duration-300 hover:scale-105 disabled:opacity-100 disabled:scale-100 disabled:cursor-not-allowed ${getButtonClassName()}`}
+              >
+                {getButtonContent()}
               </Button>
             </form>
           </motion.div>

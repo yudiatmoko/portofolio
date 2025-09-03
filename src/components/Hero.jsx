@@ -18,7 +18,7 @@ const Hero = () => {
         >
           <div className="floating">
             <img
-              src="/profile-img.png"
+              src="/profile-image.png"
               alt="Ilham Yudiatmoko"
               className="profile-img w-[250px] cursor-pointer rounded-full shadow-xl shadow-indigo-900 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-600 min-w-[250px] md:w-[350px]"
             />

@@ -31,7 +31,7 @@ const ProjectCard = ({ project }) => {
         >
           <Button
             asChild
-            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-pink-500 text-white shadow-lg transition-all duration-300 hover:scale-105"
+            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-pink-600 text-white shadow-lg transition-all duration-300 hover:scale-105"
           >
             <a
               href={project.previewLink}
@@ -107,7 +107,7 @@ const Projects = () => {
         "Designed and developed an Android-based learning application to facilitate digital education, featuring course catalogs and progress tracking.",
       techstack: ["Kotlin", "Firebase", "Git"],
       githubLink: "https://github.com/yudiatmoko/GoStudy-Group4",
-      previewLink: "https://github.com/yudiatmoko/GoStudy",
+      previewLink: "https://appetize.io/app/b_dafusb2jg3ggzxesdp3wmkr6gq",
     },
     {
       image: taniCerdasImage,
@@ -117,7 +117,7 @@ const Projects = () => {
         "A web-based platform for farmers, serving as an information center, consultation service, and community space to share knowledge.",
       techstack: ["React", "Tailwind CSS", "MySQL", "Express.js", "Git"],
       githubLink: "https://github.com/yudiatmoko/tani-cerdas",
-      previewLink: "https://github.com/yudiatmoko/TaniCerdas",
+      previewLink: "https://tani-cerdas.vercel.app/",
     },
     {
       image: myCashImage,
@@ -127,7 +127,7 @@ const Projects = () => {
         "A POS application created to help UMKM manage daily transactions, simplifying operations with sales recording and product management.",
       techstack: ["Kotlin", "PostgreSQL", "Express.js", "Git"],
       githubLink: "https://github.com/yudiatmoko/MyCash-Android",
-      previewLink: "https://github.com/yudiatmoko/MyCash",
+      previewLink: "https://appetize.io/app/b_llf2ilhqwvrbbmrhzfdwvj7igq",
     },
   ];
 
